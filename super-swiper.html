@@ -1,0 +1,97 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="stylesheet" href="../swiper/dist/css/swiper.min.css">
+<script src="../swiper/dist/js/swiper.min.js"></script>
+<!--
+`super-swiper`
+customized element
+
+@demo demo/index.html
+-->
+
+
+<dom-module id="super-swiper">
+  <template>
+    <style>
+      /*:host {
+        display: block;
+      }*/
+        /*html, body {
+          position: relative;
+          height: 100%;
+      }
+      body {
+          background: blue;
+          font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+          font-size: 14px;
+          color: red;
+          margin: 0;
+          padding: 0;
+      }*/
+      .swiper-container {
+          width: 100%;
+          height: 200px;
+      }
+
+    </style>
+    <!-- <slot> -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+           <slot></slot>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-scrollbar"></div>
+
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'super-swiper',
+
+      properties: {
+        slidesPerView: {
+          type: Number,
+          value: 1,
+        },
+        paginationClickable:{
+          type: Boolean,
+          value: true
+        },
+        pagination: {
+          type: String,
+          value: 'null',
+        },
+        nextButton: {
+          type: String,
+          value: 'null',
+        },
+        prevButton: {
+          type: String,
+          value: 'null',
+        },
+        scrollbar: {
+          type: String,
+          value: 'null',
+        },
+          spaceBetween:{
+          type: Number,
+          value: 30
+        }
+      },
+      ready: function() {
+        var self = this;
+        console.log("-----",self)
+            // var swiper = new Swiper('.swiper-container', {
+            //  pagination: '.swiper-pagination',
+            // paginationClickable: true,
+            // nextButton: '.swiper-button-next',
+            // prevButton: '.swiper-button-prev',
+            // spaceBetween: 30,
+            // slidesPerView: 4
+
+      }
+    });
+  </script>
+</dom-module>
