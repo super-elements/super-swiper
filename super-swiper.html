@@ -34,12 +34,17 @@ customized element
 
     </style>
     <!-- <slot> -->
-    <div class="swiper-container">
+    <div class="swiper-container" id="swiper-container">
         <div class="swiper-wrapper">
            <slot></slot>
         </div>
         <!-- Add Pagination -->
-        <div class="swiper-scrollbar"></div>
+        <!-- <slot name="addElement" > </slot> -->
+        <!-- <div class="swiper-scrollbar"></div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div> -->
+    </div>
 
     </div>
 
@@ -54,44 +59,105 @@ customized element
         slidesPerView: {
           type: Number,
           value: 1,
+          observer: '_currentState',
         },
         paginationClickable:{
           type: Boolean,
-          value: true
+          value: true,
+          observer: '_currentState',
         },
-        pagination: {
+        paginationnav: {
           type: String,
           value: 'null',
+          observer: '_currentState',
+        },
+        paginationHide:{
+          type:Boolean,
+          value:true,
+          observer: '_currentState',
+        },
+        paginationType:{
+          type: String,
+          value: 'custom',
+          observer: '_currentState',
         },
         nextButton: {
-          type: String,
-          value: 'null',
+          type: Boolean,
+          value: false,
+          observer: '_currentState',
         },
         prevButton: {
-          type: String,
-          value: 'null',
+          type: Boolean,
+          value: false,
+          observer: '_currentState',
         },
-        scrollbar: {
-          type: String,
-          value: 'null',
+        scrollnav: {
+          type: Boolean,
+          value: false,
+          observer: '_currentState',
         },
+
           spaceBetween:{
           type: Number,
-          value: 30
+          value: 30,
+          observer: '_currentState'
         }
       },
-      ready: function() {
+      _currentState: function(){
         var self = this;
-        console.log("-----",self)
-            // var swiper = new Swiper('.swiper-container', {
-            //  pagination: '.swiper-pagination',
-            // paginationClickable: true,
-            // nextButton: '.swiper-button-next',
-            // prevButton: '.swiper-button-prev',
-            // spaceBetween: 30,
-            // slidesPerView: 4
-
+        var obj = {observer: true,
+           observerParents: true
+        };
+        var prop = ["slidesPerView", "paginationClickable", "paginationnav", "nextButton", "prevButton", "scrollnav", "spaceBetween","paginationHide","paginationType"];
+         for (var att, i = 0, atts = self.attributes, n = atts.length; i < n; i++){
+           att = atts[i];
+           for(var k=0;k<prop.length;k++)
+            {        
+                // if(att.nodeName == prop[k].toLowerCase())
+                // {
+                //   if(att.nodeName == 'scrollnav'){
+                //     console.log("this is self variavble",self);
+                //     var scrollbar = document.createElement("div");
+                //     scrollbar.className = "swiper-scrollbar";
+                //     scrollbar.slot= "addElement";
+                //     self.$['swiper-container'].appendChild(scrollbar);
+                //     console.log("hellooooo");
+                  
+                //     //document.body.appendChild(paginationClickable);
+                //   }
+                if(att.nodeName == prop[k].toLowerCase())
+                {
+                  if(att.nodeName == 'paginationnav'){
+                    console.log("this is self variavble",self);
+                    var scrollbar = document.createElement("div");
+                    scrollbar.className = "swiper-pagination";
+                    scrollbar.slot= "addElement";
+                    self.$['swiper-container'].appendChild(scrollbar);
+                    console.log("hellooooo");
+                  
+                    //document.body.appendChild(paginationClickable);
+                  }
+                  obj[prop[k]]= att.nodeValue;
+                  
+                }
+           }
+         }
+         console.log("arrayLower obj ",obj);
+         var swiper = new Swiper('.swiper-container', obj);
+         
+      },
+      ready: function() {
+        // console.log("this-----",this);
+         //var swiper = new Swiper('.swiper-container', {
+          //observer: true,
+            // observerParents: true,
+        //     slidesPerView:4,
+        //     spaceBetween:30
+// 
+         //});
       }
+
+
     });
   </script>
 </dom-module>
