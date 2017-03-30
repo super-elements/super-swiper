@@ -20,7 +20,7 @@ customized element
           height: 100%;
       }
       body {
-          background: blue;
+          background: #eee;
           font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
           font-size: 14px;
           color: red;
@@ -34,12 +34,12 @@ customized element
 
     </style>
     <!-- <slot> -->
-    <div class="swiper-container" id="swiper-container">
+    <div class="swiper-container swiper-container-horizontal" id="swiper-container">
         <div class="swiper-wrapper">
            <slot></slot>
         </div>
         <!-- Add Pagination -->
-        <!-- <slot name="addElement" > </slot> -->
+        <slot name="addElement" > </slot>
         <!-- <div class="swiper-scrollbar"></div>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-next"></div>
@@ -61,19 +61,24 @@ customized element
           value: 1,
           observer: '_currentState',
         },
-        paginationClickable:{
-          type: Boolean,
-          value: true,
-          observer: '_currentState',
+        spaceBetween:{
+          type: Number,
+          value: 30,
+          observer: '_currentState'
         },
         paginationnav: {
-          type: String,
-          value: 'null',
+          type: Boolean,
+          value: false,
+          observer: '_currentState',
+        },
+        paginationClickable:{
+          type: Boolean,
+          value: false,
           observer: '_currentState',
         },
         paginationHide:{
-          type:Boolean,
-          value:true,
+          type: Boolean,
+          value: false,
           observer: '_currentState',
         },
         paginationType:{
@@ -96,47 +101,66 @@ customized element
           value: false,
           observer: '_currentState',
         },
-
-          spaceBetween:{
-          type: Number,
-          value: 30,
+        freeMode: {
+          type: Boolean,
+          value: false,
+        },
+         scrollbarHide: {
+          type: Boolean,
+          value: false,
           observer: '_currentState'
-        }
+        }          
       },
       _currentState: function(){
         var self = this;
         var obj = {observer: true,
            observerParents: true
         };
-        var prop = ["slidesPerView", "paginationClickable", "paginationnav", "nextButton", "prevButton", "scrollnav", "spaceBetween","paginationHide","paginationType"];
+        var prop = ["slidesPerView","paginationClickable","paginationnav","nextButton","prevButton", "paginationClickable", "scrollnav", "spaceBetween", "scrollbarHide"];
          for (var att, i = 0, atts = self.attributes, n = atts.length; i < n; i++){
            att = atts[i];
            for(var k=0;k<prop.length;k++)
             {        
-                // if(att.nodeName == prop[k].toLowerCase())
-                // {
-                //   if(att.nodeName == 'scrollnav'){
-                //     console.log("this is self variavble",self);
-                //     var scrollbar = document.createElement("div");
-                //     scrollbar.className = "swiper-scrollbar";
-                //     scrollbar.slot= "addElement";
-                //     self.$['swiper-container'].appendChild(scrollbar);
-                //     console.log("hellooooo");
-                  
-                //     //document.body.appendChild(paginationClickable);
-                //   }
                 if(att.nodeName == prop[k].toLowerCase())
                 {
-                  if(att.nodeName == 'paginationnav'){
-                    console.log("this is self variavble",self);
-                    var scrollbar = document.createElement("div");
-                    scrollbar.className = "swiper-pagination";
-                    scrollbar.slot= "addElement";
-                    self.$['swiper-container'].appendChild(scrollbar);
-                    console.log("hellooooo");
-                  
-                    //document.body.appendChild(paginationClickable);
+                  if(att.nodeName == 'scrollnav')
+                  {
+                    //var ifExist = ;
+                    //console.log("sucessful----",ifExist);
+                    if (self.getElementsByClassName('swiper-scrollbar').length < 1)
+                    {
+                      obj.scrollbar = ".swiper-scrollbar";
+                      console.log("pagination object",obj);
+                      //console.log("this is self variavble",self);
+                      var scrollbar = document.createElement("div");
+                      scrollbar.className = "swiper-scrollbar";
+                      scrollbar.slot= "addElement";
+                      self.$['swiper-container'].appendChild(scrollbar);
+                    }
+                                    
                   }
+                  // if(att.nodeName == 'nextbutton')
+                  // {
+                  //   console.log("this is self variavble",self);
+                  //   var nextButton = document.createElement("div");
+                  //   var prevButton = document.createElement("div");
+                  //   nextButton.className = "swiper-button-next";
+                  //   prevButton.className = "swiper-button-prev";
+                  //   nextButton.slot= "addElement";
+                  //   prevButton.slot= "addElement";
+                  //   self.$['swiper-container'].appendChild(nextButton);
+                  //   self.$['swiper-container'].appendChild(prevButton);
+                  //   console.log("hellooooo");
+                  //  }
+                  
+                  // if(att.nodeName == 'paginationnav'){
+                  //   console.log("this is self variavble",self);
+                  //   var pagination = document.createElement("div");
+                  //   pagination.className = "swiper-pagination";
+                  //   pagination.slot= "addElement";
+                  //   self.$['swiper-container'].appendChild(pagination);                             
+                 
+                  // }
                   obj[prop[k]]= att.nodeValue;
                   
                 }
@@ -149,12 +173,9 @@ customized element
       ready: function() {
         // console.log("this-----",this);
          //var swiper = new Swiper('.swiper-container', {
-          //observer: true,
-            // observerParents: true,
-        //     slidesPerView:4,
-        //     spaceBetween:30
-// 
-         //});
+        //pagination: '.swiper-pagination',
+        //paginationClickable: true
+    //});
       }
 
 
