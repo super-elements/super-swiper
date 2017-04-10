@@ -46,7 +46,7 @@ customized element
           observer: '_currentState'
         },
         pagination: {
-          type: Boolean,
+          type: 'string',
           value: '.container',
           observer: '_currentState',
         },
@@ -79,81 +79,90 @@ customized element
         //   type: Boolean,
         //   value: false,
         //   observer: '_currentState'
-        // }          
+        // }
       },
       _currentState: function()
       {
         var self = this;
         var obj = {
               observer: true,
-              observerParents: true          
-            };
-        var prop = ["slidesPerView","spaceBetween","pagination","paginationClickable"];
-         for (var att, i = 0, atts = self.attributes, n = atts.length; i < n; i++)
-         {           
-           console.log("obj: ", obj)
-           att = atts[i];
-              for(var k=0;k<prop.length;k++)
-              {        
-                    if(att.nodeName == prop[k].toLowerCase())
-                    {
-                      if(att.nodeName == 'scrollnav')
-                      {
-                        if (self.getElementsByClassName('swiper-scrollbar').length < 1)
-                        {
-                          obj.scrollbar = ".swiper-scrollbar";
-                          var scrollbar = document.createElement("div");
-                          scrollbar.className = "swiper-scrollbar";
-                          scrollbar.slot= "addElement";
-                          self.$['swiper-container'].appendChild(scrollbar);
-                        }                                    
-                      }
-                      if(att.nodeName == 'nextPrevbutton')
-                      {
-                        if(self.getElementsByClassName('swiper-button-next').length < 1)
-                        {
-                          obj.pagination = ".swiper-pagination";
-                          obj.nextButton=".swiper-button-next";
-                          obj.prevButton=".swiper-button-prev";
-                          //console.log("this is self variavble",self);
-                          var nextButton = document.createElement("div");
-                          var prevButton = document.createElement("div");
-                          var pagination = document.createElement("div");
-                          nextButton.className = "swiper-button-next";
-                          prevButton.className = "swiper-button-prev";
-                          pagination.className = "swiper-pagination";
-                          pagination.slot= "addElement";
-                          nextButton.slot= "addElement";
-                          prevButton.slot= "addElement";
-                          self.$['swiper-container'].appendChild(nextButton);
-                          self.$['swiper-container'].appendChild(prevButton);
-                          self.$['swiper-container'].appendChild(pagination);
-                        }
-                      }
-                      
-                      if(att.nodeName == 'pagination')
-                      {                    
-                          // debugger;
-                        if (self.getElementsByClassName('swiper-pagination').length < 1)
-                        {
-                          console.log("count length:",self.getElementsByClassName('swiper-pagination').length)
-                            // obj.pagination = '.swiper-pagination';
-                          console.log("obj.pagination", obj)
-                          var paginationDiv = document.createElement("div");
-                          paginationDiv.className = "swiper-pagination";
-                          paginationDiv.slot= "addElement";
-                          self.$['swiper-container'].appendChild(paginationDiv);
-                        }
-                        var swiper = new Swiper('.swiper-container', obj);  
-                      }                  
-                obj[prop[k]]= att.nodeValue; 
-              }      
+              observerParents: true
+        };
+        for (var prop in self.properties){
+          obj[prop] = self[prop];
+          if(prop == 'pagination'){
+            if (self.getElementsByClassName('swiper-pagination').length < 1)
+            {
+              var paginationDiv = document.createElement("div");
+              paginationDiv.className = "swiper-pagination";
+              paginationDiv.slot= "addElement";
+              self.$['swiper-container'].appendChild(paginationDiv);
+            }
           }
-        }        
-      },      
+        }
+        var swiper = new Swiper('.swiper-container', obj)
+      },
+      //         for(var k=0;k<prop.length;k++)
+      //         {
+      //               if(att.nodeName == prop[k].toLowerCase())
+      //               {
+      //                 if(att.nodeName == 'scrollnav')
+      //                 {
+      //                   if (self.getElementsByClassName('swiper-scrollbar').length < 1)
+      //                   {
+      //                     obj.scrollbar = ".swiper-scrollbar";
+      //                     var scrollbar = document.createElement("div");
+      //                     scrollbar.className = "swiper-scrollbar";
+      //                     scrollbar.slot= "addElement";
+      //                     self.$['swiper-container'].appendChild(scrollbar);
+      //                   }
+      //                 }
+      //                 if(att.nodeName == 'nextPrevbutton')
+      //                 {
+      //                   if(self.getElementsByClassName('swiper-button-next').length < 1)
+      //                   {
+      //                     obj.pagination = ".swiper-pagination";
+      //                     obj.nextButton=".swiper-button-next";
+      //                     obj.prevButton=".swiper-button-prev";
+      //                     //console.log("this is self variavble",self);
+      //                     var nextButton = document.createElement("div");
+      //                     var prevButton = document.createElement("div");
+      //                     var pagination = document.createElement("div");
+      //                     nextButton.className = "swiper-button-next";
+      //                     prevButton.className = "swiper-button-prev";
+      //                     pagination.className = "swiper-pagination";
+      //                     pagination.slot= "addElement";
+      //                     nextButton.slot= "addElement";
+      //                     prevButton.slot= "addElement";
+      //                     self.$['swiper-container'].appendChild(nextButton);
+      //                     self.$['swiper-container'].appendChild(prevButton);
+      //                     self.$['swiper-container'].appendChild(pagination);
+      //                   }
+      //                 }
+      //
+      //                 if(att.nodeName == 'pagination')
+      //                 {
+      //                     // debugger;
+      //                   if (self.getElementsByClassName('swiper-pagination').length < 1)
+      //                   {
+      //                     console.log("count length:",self.getElementsByClassName('swiper-pagination').length)
+      //                       // obj.pagination = '.swiper-pagination';
+      //                     console.log("obj.pagination", obj)
+      //                     var paginationDiv = document.createElement("div");
+      //                     paginationDiv.className = "swiper-pagination";
+      //                     paginationDiv.slot= "addElement";
+      //                     self.$['swiper-container'].appendChild(paginationDiv);
+      //                   }
+      //                   var swiper = new Swiper('.swiper-container', obj);
+      //                 }
+      //           obj[prop[k]]= att.nodeValue;
+      //         }
+      //     }
+      //   }
+      // },
 
       ready: function() {
-               
+
 
       }
 
