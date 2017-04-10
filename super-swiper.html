@@ -38,49 +38,46 @@ customized element
         slidesPerView: {
           type: Number,
           value: 1,
+          reflectToAttribute: true,
           observer: '_currentState',
         },
         spaceBetween:{
           type: Number,
           value: 3,
+          reflectToAttribute: true,
           observer: '_currentState'
         },
         pagination: {
-          type: 'string',
-          value: '.container',
+          type: String,
+          value: '.page',
+          reflectToAttribute: true,
           observer: '_currentState',
         },
         paginationClickable:{
           type: Boolean,
           value: false,
+          reflectToAttribute: true,
+          observer: '_currentState',
+        },
+        scrollbar: {
+          type: String,
+          value: '.bar',
+          reflectToAttribute: true,
+          observer: '_currentState',
+        },
+        // prevButton : {
+        //   type: String,
+        //   value: '.prev',
+        //   observer: '_currentState',
+        //   reflectToAttribute: true,
+        // },
+        navButton : {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
           observer: '_currentState',
         }
-        // paginationHide:{
-        //   type: Boolean,
-        //   value: false,
-        //   observer: '_currentState',
-        // },
-        // nextPrevButton: {
-        //   type: Boolean,
-        //   value: false,
-        //   observer: '_currentState',
-        // },
-        // scrollnav: {
-        //   type: Boolean,
-        //   value: false,
-        //   observer: '_currentState',
-        // },
-        // freeMode: {
-        //   type: Boolean,
-        //   value: false,
-        //   observer: '_currentState',
-        // },
-        //  scrollbarHide: {
-        //   type: Boolean,
-        //   value: false,
-        //   observer: '_currentState'
-        // }
-      },
+       },
       _currentState: function()
       {
         var self = this;
@@ -88,79 +85,59 @@ customized element
               observer: true,
               observerParents: true
         };
-        for (var prop in self.properties){
+        for (var prop in self.properties)
+        {
           obj[prop] = self[prop];
-          if(prop == 'pagination'){
-            if (self.getElementsByClassName('swiper-pagination').length < 1)
-            {
-              var paginationDiv = document.createElement("div");
-              paginationDiv.className = "swiper-pagination";
-              paginationDiv.slot= "addElement";
-              self.$['swiper-container'].appendChild(paginationDiv);
-            }
+          console.log("prop: ",prop)
+          for (var att, i = 0, atts = self.attributes, n = atts.length; i < n; i++)
+          {
+               att = atts[i];
+               console.log("att value",att);
+              if(att.nodeName == 'pagination')
+              {
+                if (self.getElementsByClassName('swiper-pagination').length < 1)
+                {
+                  var paginationDiv = document.createElement("div");
+                  paginationDiv.className = "swiper-pagination";
+                  paginationDiv.slot= "addElement";
+                  self.$['swiper-container'].appendChild(paginationDiv);
+                }
+              }
+              if(att.nodeName == 'scrollbar')
+              {
+                if (self.getElementsByClassName('swiper-scrollbar').length < 1)
+                {
+                  var scrollbarDiv = document.createElement("div");
+                  scrollbarDiv.className = "swiper-scrollbar";
+                  scrollbarDiv.slot= "addElement";
+                  self.$['swiper-container'].appendChild(scrollbarDiv);
+                }
+              }
+              if(att.nodeName == 'nav-button')
+              {
+                obj.pagination = '.swiper-pagination';
+                obj.nextButton = '.swiper-button-next';
+                obj.prevButton = '.swiper-button-prev';
+                if(self.getElementsByClassName('swiper-button-next').length < 1)
+                {
+                  var nextButtonDiv = document.createElement("div");                 
+                  nextButtonDiv.className = "swiper-button-next";
+                  nextButtonDiv.slot= "addElement";
+                  self.$['swiper-container'].appendChild(nextButtonDiv);
+                
+                  var prevButtonDiv = document.createElement("div");
+                  prevButtonDiv.className = "swiper-button-prev";
+                  prevButtonDiv.slot= "addElement";
+                  self.$['swiper-container'].appendChild(prevButtonDiv);
+                }
+              }
+
           }
         }
+        console.log("object",obj);
+
         var swiper = new Swiper('.swiper-container', obj)
       },
-      //         for(var k=0;k<prop.length;k++)
-      //         {
-      //               if(att.nodeName == prop[k].toLowerCase())
-      //               {
-      //                 if(att.nodeName == 'scrollnav')
-      //                 {
-      //                   if (self.getElementsByClassName('swiper-scrollbar').length < 1)
-      //                   {
-      //                     obj.scrollbar = ".swiper-scrollbar";
-      //                     var scrollbar = document.createElement("div");
-      //                     scrollbar.className = "swiper-scrollbar";
-      //                     scrollbar.slot= "addElement";
-      //                     self.$['swiper-container'].appendChild(scrollbar);
-      //                   }
-      //                 }
-      //                 if(att.nodeName == 'nextPrevbutton')
-      //                 {
-      //                   if(self.getElementsByClassName('swiper-button-next').length < 1)
-      //                   {
-      //                     obj.pagination = ".swiper-pagination";
-      //                     obj.nextButton=".swiper-button-next";
-      //                     obj.prevButton=".swiper-button-prev";
-      //                     //console.log("this is self variavble",self);
-      //                     var nextButton = document.createElement("div");
-      //                     var prevButton = document.createElement("div");
-      //                     var pagination = document.createElement("div");
-      //                     nextButton.className = "swiper-button-next";
-      //                     prevButton.className = "swiper-button-prev";
-      //                     pagination.className = "swiper-pagination";
-      //                     pagination.slot= "addElement";
-      //                     nextButton.slot= "addElement";
-      //                     prevButton.slot= "addElement";
-      //                     self.$['swiper-container'].appendChild(nextButton);
-      //                     self.$['swiper-container'].appendChild(prevButton);
-      //                     self.$['swiper-container'].appendChild(pagination);
-      //                   }
-      //                 }
-      //
-      //                 if(att.nodeName == 'pagination')
-      //                 {
-      //                     // debugger;
-      //                   if (self.getElementsByClassName('swiper-pagination').length < 1)
-      //                   {
-      //                     console.log("count length:",self.getElementsByClassName('swiper-pagination').length)
-      //                       // obj.pagination = '.swiper-pagination';
-      //                     console.log("obj.pagination", obj)
-      //                     var paginationDiv = document.createElement("div");
-      //                     paginationDiv.className = "swiper-pagination";
-      //                     paginationDiv.slot= "addElement";
-      //                     self.$['swiper-container'].appendChild(paginationDiv);
-      //                   }
-      //                   var swiper = new Swiper('.swiper-container', obj);
-      //                 }
-      //           obj[prop[k]]= att.nodeValue;
-      //         }
-      //     }
-      //   }
-      // },
-
       ready: function() {
 
 
