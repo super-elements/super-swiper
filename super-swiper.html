@@ -11,22 +11,19 @@
 
   <dom-module id="super-swiper">
     <template>
-    <style>
-    .swiper-container {
-      width: 100%;
-      height: 100%;
-    }
-
-    </style>
-    <!-- <slot> -->
-    <div class="swiper-container" id="swiper-container">
-      <div class="swiper-wrapper">
-        <slot></slot>
+      <style>
+        .swiper-container {
+          width: 100%;
+          height: 100%;
+        }
+      </style>
+      <div class="swiper-container" id="swiper-container">
+        <div class="swiper-wrapper">
+          <slot></slot>
+        </div>
+        <slot name="addElement" > </slot>
       </div>
-      <slot name="addElement" > </slot>
-    </div>
-
-  </template>
+    </template>
 
   <script>
   Polymer({
@@ -99,10 +96,9 @@
       for (var elementProp in self.properties)
       {
         swiperObj[elementProp] = self[elementProp];
-        for (var att, i = 0, atts = self.attributes, n = atts.length; i < n; i++)
+        for (var att, i = 0, atts = self.attributes; i < atts.length; i++)
         {
           att = atts[i];
-          console.log("att value",att);
           if(att.nodeName == 'pagination')
           {
             if (self.getElementsByClassName('swiper-pagination').length < 1)
@@ -145,11 +141,7 @@
         }
       }
       var swiper = new Swiper('.swiper-container', swiperObj)
-    },
-    ready: function() {
-
-    }
-
+    },    
   });
   </script>
   </dom-module>
