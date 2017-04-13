@@ -1,0 +1,149 @@
+  <link rel="import" href="../polymer/polymer.html">
+  <link rel="stylesheet" href="../swiper/dist/css/swiper.min.css">
+  <script src="../swiper/dist/js/swiper.min.js"></script>
+  <!--
+  `super-swiper`
+  customized element
+
+  @demo demo/index.html
+  -->
+
+
+  <dom-module id="super-swiper">
+    <template>
+      <style>
+        .swiper-container {
+          width: 100%;
+          height: 100%;
+        }
+      </style>
+      <div class="swiper-container" id="swiper-container">
+        <div class="swiper-wrapper">
+          <slot></slot>
+        </div>
+        <slot name="addElement" > </slot>
+      </div>
+    </template>
+
+    <script>
+    Polymer({
+
+      is: 'super-swiper',
+
+      properties: {
+        /**
+         * Describes number of slides shown on a page .
+         */
+        slidesPerView: {
+          type: Number,
+          value: 1,
+          reflectToAttribute: true,
+          observer: '_currentState',
+        },
+        /**
+         * Describes space between slides .
+         */
+        spaceBetween:{
+          type: Number,
+          value: 3,
+          reflectToAttribute: true,
+          observer: '_currentState'
+        },
+        /**
+         * Describes navigation using pagination bullets .
+         */
+        pagination: {
+          type: String,
+          value: '.page',
+          reflectToAttribute: true,
+          observer: '_currentState',
+        },
+        /**
+         * Describes the pagination navigation event of on the click on pagination bullets  .
+         */
+        paginationClickable:{
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
+          observer: '_currentState',
+        },
+        /**
+         * Describes the simple navigation by sliding the slides .
+         */
+        scrollbar: {
+          type: String,
+          value: '.bar',
+          reflectToAttribute: true,
+          observer: '_currentState',
+        },
+        /**
+         * Describes the navigation Button on the click on Next Prev Button .
+         */
+        navButton : {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
+          observer: '_currentState',
+        }
+      },
+      /**
+         * Describes all properties and their value of Super-Swiper .
+         */
+      _currentState: function()
+      {
+        var self = this;
+        var swiperObj = {
+          observer: true,
+          observerParents: true
+        };
+        for (var elementProp in self.properties)
+        {
+          swiperObj[elementProp] = self[elementProp];
+          for (var attributeName in self.attributes)
+          {
+            if(self.attributes[attributeName].nodeName == 'pagination')
+            {
+              if (self.getElementsByClassName('swiper-pagination').length < 1)
+              {
+                var paginationDiv = document.createElement("div");
+                paginationDiv.className = "swiper-pagination";
+                paginationDiv.slot= "addElement";
+                self.$['swiper-container'].appendChild(paginationDiv);
+              }
+            }
+            if(self.attributes[attributeName].nodeName == 'scrollbar')
+            {
+              if (self.getElementsByClassName('swiper-scrollbar').length < 1)
+              {
+                var scrollbarDiv = document.createElement("div");
+                scrollbarDiv.className = "swiper-scrollbar";
+                scrollbarDiv.slot= "addElement";
+                self.$['swiper-container'].appendChild(scrollbarDiv);
+              }
+            }
+            if(self.attributes[attributeName].nodeName == 'nav-button')
+            {
+              swiperObj.pagination = '.swiper-pagination';
+              swiperObj.nextButton = '.swiper-button-next';
+              swiperObj.prevButton = '.swiper-button-prev';
+              if(self.getElementsByClassName('swiper-button-next').length < 1)
+              {
+                var nextButtonDiv = document.createElement("div");
+                nextButtonDiv.className = "swiper-button-next";
+                nextButtonDiv.slot= "addElement";
+                self.$['swiper-container'].appendChild(nextButtonDiv);
+
+                var prevButtonDiv = document.createElement("div");
+                prevButtonDiv.className = "swiper-button-prev";
+                prevButtonDiv.slot= "addElement";
+                self.$['swiper-container'].appendChild(prevButtonDiv);
+              }
+            }
+
+          }
+        }
+        var swiper = new Swiper('.swiper-container', swiperObj)
+      },    
+    });
+    </script>
+  </dom-module>
